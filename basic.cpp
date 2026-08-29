@@ -9,6 +9,9 @@ int speed = 3;
 int score = 0;
 int len1 = 0;
 int len2 = 0;
+
+long long delta_time = 0;
+
 Node* S = nullptr;
 Food* F = nullptr;
 
