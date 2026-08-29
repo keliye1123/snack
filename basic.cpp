@@ -10,6 +10,8 @@ int score = 0;
 int len1 = 0;
 int len2 = 0;
 
+ExMessage msg;
+
 long long delta_time = 0;
 int FPS_gap = FPS_GAP;
 long long FPS_draw = 0;

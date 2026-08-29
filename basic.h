@@ -62,6 +62,8 @@ extern Direction player2_dir ;   //玩家1蛇的方向
 extern int cur_player;           //当前主机操作的玩家编号
 extern bool exchange_dir;        //当前主机玩家的方向是否改变
 
+extern ExMessage msg;            //消息队列
+
 typedef struct people {
     char name[MAXSIZE] = {};//MAXSIZE = 10
     int  score = 0;
