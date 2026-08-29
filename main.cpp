@@ -35,13 +35,16 @@ public:
             cleardevice();
 
             mainWorld.Render_();
+            DrawFPS_();
 
             EndBatchDraw();
 
             //帧率控制
             end_time = std::chrono::steady_clock::now();
             delta_time = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
-            if (delta_time < 1000/FPS) Sleep(1000/FPS - delta_time);
+            if (delta_time < 1000/FPS) Sleep(1000/(FPS*2) - delta_time);//由于Sleep(的精度问题，需要将FPS*2)
+            end_time = std::chrono::steady_clock::now();
+            delta_time = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
 
         }
 

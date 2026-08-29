@@ -11,7 +11,8 @@
 #define ORIGIN_DIRECTION RIGHT  //蛇的初始方向
 #define MAXSIZE 10              //字符串最大长度
 #define  MAX_PLAYERS 5          //排行榜最大人数
-#define FPS 60
+#define FPS 60                  //游戏帧率
+#define FPS_GAP 12              //每隔12帧刷新FPS显示
 
 extern int before_level;  //之前场景
 extern int cur_level;  //当前场景
@@ -22,6 +23,8 @@ extern int len1;                   //围城模式的排行榜人数
 extern int len2;                   //无限模式的排行榜人数
 
 extern long long delta_time;      //单帧时间间隔
+extern int FPS_gap;               //设置FPS的渲染间隔帧数
+extern long long FPS_draw;        //用于绘制FPS的值
 
 //蛇节点定义
 typedef struct snack {
@@ -112,3 +115,6 @@ void DrawFood_();
 
 //渲染蛇
 void DrawSnack_();
+
+//渲染帧率显示
+void DrawFPS_();

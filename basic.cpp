@@ -11,6 +11,8 @@ int len1 = 0;
 int len2 = 0;
 
 long long delta_time = 0;
+int FPS_gap = FPS_GAP;
+long long FPS_draw = 0;
 
 Node* S = nullptr;
 Food* F = nullptr;
@@ -193,4 +195,19 @@ void DrawSnack_() {
         fillrectangle(head -> x,head -> y,head -> x + SIZE,head -> y+ SIZE);
         head = head -> next;
     }
+}
+
+//äÖÈ¾Ö¡ÂÊÏÔÊ¾
+void DrawFPS_() {
+    char s[20];
+    if (FPS_gap == FPS_GAP) {
+        FPS_draw = delta_time > 0 ? (long long)(1000/delta_time) : 0;
+        FPS_gap = 0;
+    }else {
+        FPS_gap++;
+    }
+
+    sprintf(s,"FPS£º%lld",FPS_draw);
+    settextstyle(38,0,"Î¢ÈíÑÅºÚ");
+    outtextxy(90,0,s);
 }
