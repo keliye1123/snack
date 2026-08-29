@@ -14,13 +14,19 @@ inline void SetInput_() {
         return;
     }
     if (InArea_(300,390,350,410) && (GetAsyncKeyState(VK_LBUTTON)& 0x0001)) {
-        if (speed > 1) speed--;
+        if (speed <= 6) {
+            speed += 2;
+            speed_gap = speed;
+        }
     }
     if ((InArea_(515,375,535,425) || InArea_(500,390,550,410)) &&(GetAsyncKeyState(VK_LBUTTON) & 0x0001) ) {
-        if (speed < 3) speed++;
+        if (speed >= 4) {
+            speed -= 2;
+            speed_gap = speed;
+        }
     }
 
-    sprintf(Set_s,"%d",speed);
+    sprintf(Set_s,"%d",10 - speed);
 }
 
 inline void SetRRender_() {

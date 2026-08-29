@@ -95,16 +95,20 @@ inline void  UpdateSnack2_() {
 }
 
 inline void UpdateMap2_() {
-    //逻辑更新
-    UpdateSnack2_();
-    UpdateFood_();
-    if (IsDead_()) {
-        before_level = 3;
-        cur_level = 2;
-        exchange_level_flag = true;
-        return;
+    if (speed_gap == speed) {
+        speed_gap = 0;
+        //逻辑更新
+        UpdateSnack2_();
+        UpdateFood_();
+        if (IsDead_()) {
+            before_level = 3;
+            cur_level = 2;
+            exchange_level_flag = true;
+            return;
+        }
+    }else {
+        speed_gap++;
     }
-
 }
 
 //渲染背景2

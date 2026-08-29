@@ -5,7 +5,8 @@ int before_level = 0;
 int cur_level = 0;
 bool exchange_level_flag = true;
 int level = 0;
-int speed = 3;
+int speed = 10 - SPEED;
+int speed_gap = speed;
 int score = 0;
 int len1 = 0;
 int len2 = 0;
@@ -146,7 +147,7 @@ void InitFood_() {
 void UpdateFood_() {
     if (S -> next -> x == F -> x && S -> next -> y == F -> y) {
         F -> exists = false;
-        score += speed;
+        score += 10 - speed;
         return;
     }
     if (F -> exists ) return;

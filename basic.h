@@ -13,11 +13,13 @@
 #define  MAX_PLAYERS 5          //排行榜最大人数
 #define FPS 60                  //游戏帧率
 #define FPS_GAP 12              //每隔12帧刷新FPS显示
+#define SPEED 2                 //初始速度
 
 extern int before_level;  //之前场景
 extern int cur_level;  //当前场景
 extern bool exchange_level_flag;
 extern int speed;                  //速度
+extern int speed_gap;              //速度间隔
 extern int score;                  //分数
 extern int len1;                   //围城模式的排行榜人数
 extern int len2;                   //无限模式的排行榜人数

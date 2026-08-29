@@ -86,14 +86,19 @@ inline void  UpdateSnack1_() {
 }
 
 inline void UpdateMap1_() {
-    //逻辑更新
-    UpdateSnack1_();
-    UpdateFood_();
-    if (IsDead_()) {
-        before_level = 1;
-        cur_level = 2;
-        exchange_level_flag = true;
-        return;
+    if (speed_gap == speed) {
+        speed_gap = 0;
+        //逻辑更新
+        UpdateSnack1_();
+        UpdateFood_();
+        if (IsDead_()) {
+            before_level = 1;
+            cur_level = 2;
+            exchange_level_flag = true;
+            return;
+        }
+    }else {
+        speed_gap++;
     }
 }
 
