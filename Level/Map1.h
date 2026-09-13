@@ -86,14 +86,19 @@ inline void  UpdateSnack1_() {
 }
 
 inline void UpdateMap1_() {
-    //Âß¼­¸üÐÂ
-    UpdateSnack1_();
-    UpdateFood_();
-    if (IsDead_()) {
-        before_level = 1;
-        cur_level = 2;
-        exchange_level_flag = true;
-        return;
+    if (speed_gap == speed) {
+        speed_gap = 0;
+        //é€»è¾‘æ›´æ–°
+        UpdateSnack1_();
+        UpdateFood_();
+        if (IsDead_()) {
+            before_level = 1;
+            cur_level = 2;
+            exchange_level_flag = true;
+            return;
+        }
+    }else {
+        speed_gap++;
     }
 }
 
@@ -116,7 +121,7 @@ inline void DrawBackground1_() {
 }
 
 inline void RenderMap1_() {
-    //äÖÈ¾
+    //æ¸²æŸ“
     DrawBackground1_();
     DrawSnack_();
     DrawFood_();

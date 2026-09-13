@@ -5,10 +5,18 @@ int before_level = 0;
 int cur_level = 0;
 bool exchange_level_flag = true;
 int level = 0;
-int speed = 3;
+int speed = 10 - SPEED;
+int speed_gap = speed;
 int score = 0;
 int len1 = 0;
 int len2 = 0;
+
+ExMessage msg;
+
+long long delta_time = 0;
+int FPS_gap = FPS_GAP;
+long long FPS_draw = 0;
+
 Node* S = nullptr;
 Food* F = nullptr;
 
@@ -27,9 +35,9 @@ bool exchange_dir = false;
 players players1[MAX_PLAYERS];
 players players2[MAX_PLAYERS];
 
-bool map[HEIGHT/SIZE][WIDTH/SIZE];//È«¾ÖµØÍ¼
+bool map[HEIGHT/SIZE][WIDTH/SIZE];//å…¨å±€åœ°å›¾
 
-Direction dir = RIGHT;//ÉßµÄ·½Ïò
+Direction dir = RIGHT;//è›‡çš„æ–¹å‘
 POINT pt;
 
 bool InArea_(int x1,int y1,int x2,int y2) {
@@ -39,11 +47,11 @@ bool InArea_(int x1,int y1,int x2,int y2) {
     return false;
 }
 
-//ÉùÃ÷Ëæ»úÊýÖÖ×Ó
+//å£°æ˜Žéšæœºæ•°ç§å­
 std::random_device rd;
 std::mt19937 gen(rd());
 
-//»ñÈ¡Ëæ»úÊý
+//èŽ·å–éšæœºæ•°
 int RandInt_(int lower,int upper) {
     if(lower > upper)
     {
@@ -77,7 +85,7 @@ void BubbleSort(players players_[],int len)
     }
 }
 
-//³õÊ¼»¯Éß
+//åˆå§‹åŒ–è›‡
 void InitSnack_() {
     S = new Node();
 
@@ -124,7 +132,7 @@ void InitSnack_() {
     S -> next =  head;
 }
 
-//Ê³Îï³õÊ¼»¯
+//é£Ÿç‰©åˆå§‹åŒ–
 void InitFood_() {
     Food* food = (Food*)malloc(sizeof(Food));
     do {
@@ -139,7 +147,7 @@ void InitFood_() {
 void UpdateFood_() {
     if (S -> next -> x == F -> x && S -> next -> y == F -> y) {
         F -> exists = false;
-        score += speed;
+        score += 10 - speed;
         return;
     }
     if (F -> exists ) return;
@@ -168,8 +176,8 @@ bool IsDead_() {
 
 void DrawScore_() {
     char s[20];
-    sprintf(s,"µÃ·Ö£º%d",score);
-    settextstyle(75,0,"Î¢ÈíÑÅºÚ");
+    sprintf(s,"å¾—åˆ†ï¼š%d",score);
+    settextstyle(75,0,"å¾®è½¯é›…é»‘");
     outtextxy(0,HEIGHT,s);
 }
 
@@ -181,7 +189,7 @@ void DrawFood_() {
 
 }
 
-//äÖÈ¾Éß
+//æ¸²æŸ“è›‡
 void DrawSnack_() {
     Node* head = S -> next;
     while (head != NULL) {
@@ -190,4 +198,19 @@ void DrawSnack_() {
         fillrectangle(head -> x,head -> y,head -> x + SIZE,head -> y+ SIZE);
         head = head -> next;
     }
+}
+
+//æ¸²æŸ“å¸§çŽ‡æ˜¾ç¤º
+void DrawFPS_() {
+    char s[20];
+    if (FPS_gap == FPS_GAP) {
+        FPS_draw = delta_time > 0 ? (long long)(1000/delta_time) : 0;
+        FPS_gap = 0;
+    }else {
+        FPS_gap++;
+    }
+
+    sprintf(s,"FPSï¼š%lld",FPS_draw);
+    settextstyle(38,0,"å¾®è½¯é›…é»‘");
+    outtextxy(90,0,s);
 }

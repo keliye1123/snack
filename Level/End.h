@@ -5,6 +5,8 @@ inline char s[10];
 inline char name[10] = {};
 inline int index = 0;
 
+inline bool key_lock = false;
+
 inline void WriteScore_() {
 
     if (before_level == 1) {
@@ -18,7 +20,6 @@ inline void WriteScore_() {
             strcpy(players1[len1 - 1].name,name);
             players1[len1 - 1].score = score;
         }
-        std::cout << "ÅÅÐòÇ° len1 = " << len1 << ", MAX_PLAYERS = " << MAX_PLAYERS << std::endl;
         BubbleSort(players1,len1);
 
     }
@@ -55,7 +56,10 @@ inline void InitEnd_() {
 }
 
 inline void InputEnd_() {
-     //¼à²âÊäÈë
+     //ç›‘æµ‹è¾“å…¥
+    peekmessage(&msg, EM_KEY);
+    if (msg.message == WM_KEYDOWN && !key_lock) {
+        key_lock = true;
         if (index >= 8) {index = 8;}
         else if (GetAsyncKeyState('A') & 0x8000) { name[index++] = 'A'; }
         else if (GetAsyncKeyState('B') & 0x8000) { name[index++] = 'B'; }
@@ -101,14 +105,16 @@ inline void InputEnd_() {
             exchange_level_flag = true;
             return;
         }
+    }
+    else if (msg.message == WM_KEYUP && key_lock) key_lock = false;
 
 }
 
 inline void RenderEnd_() {
-    settextstyle(50,20,"Î¢ÈíÑÅºÚ");
-    outtextxy(200,300,"×îÖÕµÄ·Ö£º");
+    settextstyle(50,20,"å¾®è½¯é›…é»‘");
+    outtextxy(200,300,"æœ€ç»ˆçš„åˆ†ï¼š");
     outtextxy(400,300,s);
-    outtextxy(200,400,"ÊäÈëêÇ³Æ£º");
+    outtextxy(200,400,"è¾“å…¥æ˜µç§°ï¼š");
     outtextxy(400,400,name);
 }
 

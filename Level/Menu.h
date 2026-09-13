@@ -2,12 +2,12 @@
 #include"../basic.h"
 #include"../FileManager.h"
 
-//Ö÷²Ëµ¥
+//ä¸»èœå•
 inline void MenuInput_() {
-    //ÊäÈë¼à²â
+    //è¾“å…¥ç›‘æµ‹
     GetCursorPos(&pt);
-    HWND hwnd = GetForegroundWindow();//»ñÈ¡µ±Ç°´°¿Ú¾ä±ú
-    ScreenToClient(hwnd,&pt);//½«×ø±ê×ªÎªÏà¶ÔÓÚ´°¿ÚµÄ×ø±ê
+    HWND hwnd = GetForegroundWindow();//è·å–å½“å‰çª—å£å¥æŸ„
+    ScreenToClient(hwnd,&pt);//å°†åæ ‡è½¬ä¸ºç›¸å¯¹äºçª—å£çš„åæ ‡
     if (InArea_(100,600,200,650) &&(GetAsyncKeyState(VK_LBUTTON)& 0x8000) ) {
         cur_level = 1;
         exchange_level_flag = true;
@@ -37,9 +37,9 @@ inline void MenuInput_() {
 }
 
 inline void MenuRender_() {
-    //äÖÈ¾
+    //æ¸²æŸ“
     settextcolor(BLACK);
-    settextstyle(0,0,"Î¢ÈíÑÅºÚ");
+    settextstyle(0,0,"å¾®è½¯é›…é»‘");
     setbkmode(TRANSPARENT);
 
     setfillcolor(YELLOW);
@@ -47,44 +47,44 @@ inline void MenuRender_() {
         setfillcolor(WHITE);
     }
     fillroundrect(100,600,200,650,10,10);
-    outtextxy(110,610,"Î§³ÇÄ£Ê½");
+    outtextxy(110,610,"å›´åŸæ¨¡å¼");
 
     setfillcolor(YELLOW);
     if (InArea_(400,600,500,650)) {
         setfillcolor(WHITE);
     }
     fillroundrect(400,600,500,650,10,10);
-    outtextxy(410,610,"ÎŞÏŞÄ£Ê½");
+    outtextxy(410,610,"æ— é™æ¨¡å¼");
 
     setfillcolor(YELLOW);
     if (InArea_(700,600,800,650)) {
         setfillcolor(WHITE);
     }
     fillroundrect(700,600,800,650,10,10);
-    outtextxy(730,610,"ÉèÖÃ");
+    outtextxy(730,610,"è®¾ç½®");
 
     setfillcolor(YELLOW);
     if (InArea_(700,500,800,550)) {
         setfillcolor(WHITE);
     }
     fillroundrect(700,500,800,550,10,10);
-    outtextxy(720,515,"ÅÅĞĞ°ñ");
+    outtextxy(720,515,"æ’è¡Œæ¦œ");
 
     setfillcolor(YELLOW);
     if (InArea_(400,500,500,550)) {
         setfillcolor(WHITE);
     }
     fillroundrect(400,500,500,550,10,10);
-    outtextxy(410,515,"Áª»úÄ£Ê½");
+    outtextxy(410,515,"è”æœºæ¨¡å¼");
 
     setfillcolor(YELLOW);
     if (InArea_(WIDTH - 100,0,WIDTH,50)) {
         setfillcolor(WHITE);
     }
     fillroundrect(WIDTH - 100,0,WIDTH,50,10,10);
-    outtextxy(WIDTH - 100 + 30,10,"ÍË³ö");
+    outtextxy(WIDTH - 100 + 30,10,"é€€å‡º");
 
-    settextstyle(150,0,"Î¢ÈíÑÅºÚ");
-    outtextxy(250,150,"Ì°³ÔÉß");
+    settextstyle(150,0,"å¾®è½¯é›…é»‘");
+    outtextxy(250,150,"è´ªåƒè›‡");
 }
 
