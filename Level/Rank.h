@@ -3,7 +3,7 @@
 #include <iostream>
 
 inline void InputRank_() {
-    //¼à²â
+    //ç›‘æµ‹
     GetCursorPos(&pt);
     HWND hwnd = GetForegroundWindow();
     ScreenToClient(hwnd,&pt);
@@ -15,13 +15,13 @@ inline void InputRank_() {
 }
 
 inline void RenderRank_() {
-    settextstyle(100,0,"Î¢ÈíÑÅºÚ");
-    outtextxy(300,10,"ÅÅĞĞ°ñ");
+    settextstyle(100,0,"å¾®è½¯é›…é»‘");
+    outtextxy(300,10,"æ’è¡Œæ¦œ");
 
-    settextstyle(50,0,"Î¢ÈíÑÅºÚ");
-    outtextxy(150,150,"Î§³ÇÄ£Ê½");
-    settextstyle(50,0,"Î¢ÈíÑÅºÚ");
-    outtextxy(500,150,"ÎŞÏŞÄ£Ê½");
+    settextstyle(50,0,"å¾®è½¯é›…é»‘");
+    outtextxy(150,150,"å›´åŸæ¨¡å¼");
+    settextstyle(50,0,"å¾®è½¯é›…é»‘");
+    outtextxy(500,150,"æ— é™æ¨¡å¼");
     for (int i=0;i<len1;i++) {
         char pl1[10];
         sprintf(pl1,"%d.%s %d",i+1,players1[i].name,players1[i].score);
@@ -38,6 +38,6 @@ inline void RenderRank_() {
         setfillcolor(WHITE);
     }
     fillroundrect(0,0,100,50,10,10);
-    settextstyle(0,0,"Î¢ÈíÑÅºÚ");
-    outtextxy(30,10,"·µ»Ø");
+    settextstyle(0,0,"å¾®è½¯é›…é»‘");
+    outtextxy(30,10,"è¿”å›");
 }

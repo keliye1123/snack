@@ -56,7 +56,7 @@ inline void InitEnd_() {
 }
 
 inline void InputEnd_() {
-     //¼à²âÊäÈë
+     //ç›‘æµ‹è¾“å…¥
     peekmessage(&msg, EM_KEY);
     if (msg.message == WM_KEYDOWN && !key_lock) {
         key_lock = true;
@@ -111,10 +111,10 @@ inline void InputEnd_() {
 }
 
 inline void RenderEnd_() {
-    settextstyle(50,20,"Î¢ÈíÑÅºÚ");
-    outtextxy(200,300,"×îÖÕµÄ·Ö£º");
+    settextstyle(50,20,"å¾®è½¯é›…é»‘");
+    outtextxy(200,300,"æœ€ç»ˆçš„åˆ†ï¼š");
     outtextxy(400,300,s);
-    outtextxy(200,400,"ÊäÈëêÇ³Æ£º");
+    outtextxy(200,400,"è¾“å…¥æ˜µç§°ï¼š");
     outtextxy(400,400,name);
 }
 

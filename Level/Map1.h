@@ -88,7 +88,7 @@ inline void  UpdateSnack1_() {
 inline void UpdateMap1_() {
     if (speed_gap == speed) {
         speed_gap = 0;
-        //Âß¼­¸üÐÂ
+        //é€»è¾‘æ›´æ–°
         UpdateSnack1_();
         UpdateFood_();
         if (IsDead_()) {
@@ -121,7 +121,7 @@ inline void DrawBackground1_() {
 }
 
 inline void RenderMap1_() {
-    //äÖÈ¾
+    //æ¸²æŸ“
     DrawBackground1_();
     DrawSnack_();
     DrawFood_();

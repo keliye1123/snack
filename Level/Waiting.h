@@ -5,16 +5,22 @@
 
 inline void InitWaiting_() {
     if (exchange_level_flag == true) {
-        //Óë·şÎñÆ÷½¨Á¢Á¬½Ó
-        //³õÊ¼»¯socket¿â
+        //ä¸æœåŠ¡å™¨å»ºç«‹è¿æ¥
+        //åˆå§‹åŒ–socketåº“
         InitSocket_();
 
         server_socket = ConnectToServer_(SPORT,"8.156.69.189");
+        if (server_socket == -1) {
+            exchange_level_flag = true;
+            std::cout << "è¿æ¥åˆ°æœåŠ¡å™¨å¤±è´¥" << std::endl;
+            cur_level = 0;
+            return;
+        }
         pool.enqueue([] {
             std::string ac;
             ac.clear();
             ac.resize(1024);
-            std::cout<<"µÈ´ıÆ¥ÅäÖĞ"<<std::endl;
+            std::cout<<"ç­‰å¾…åŒ¹é…ä¸­"<<std::endl;
             int readn = recv(server_socket,&ac[0],1024,0);
             ac.resize(readn);
             int res = stoi(ac);
@@ -23,22 +29,22 @@ inline void InitWaiting_() {
                 char buf[32];
                 int len = sprintf(buf,"%d",ENTER_SUCCESS);
                 send(server_socket,buf,len,0);
-                std::cout<<"Æ¥Åä³É¹¦"<<std::endl;
-                //½ÓÊÕ±àºÅ
+                std::cout<<"åŒ¹é…æˆåŠŸ"<<std::endl;
+                //æ¥æ”¶ç¼–å·
                 ac.clear();
                 ac.resize(1024);
-                std::cout<<"µÈ´ı½ÓÊÜÍæ¼Ò±àºÅ"<<std::endl;
+                std::cout<<"ç­‰å¾…æ¥å—ç©å®¶ç¼–å·"<<std::endl;
                 int readn = recv(server_socket,&ac[0],1024,0);
                 ac.resize(readn);
                 cur_player = stoi(ac);
-                std::cout<<"½ÓÊÕµ½Íæ¼Ò±àºÅ"<<std::endl;
-                std::cout<<"cur_player: "<<cur_player<<(cur_player == 1 ? "À¶É«" :"ÂÌÉ«")<<std::endl;
+                std::cout<<"æ¥æ”¶åˆ°ç©å®¶ç¼–å·"<<std::endl;
+                std::cout<<"cur_player: "<<cur_player<<(cur_player == 1 ? "è“è‰²" :"ç»¿è‰²")<<std::endl;
 
                 exchange_level_flag = true;
                 cur_level = 6;
             }
             else if (res == EXIT_QUEUE) {
-                std::cout << "ÊÕµ½EXIT_QUEUEÍË³ö¶ÓÁĞ³É¹¦" << std::endl;
+                std::cout << "æ”¶åˆ°EXIT_QUEUEé€€å‡ºé˜Ÿåˆ—æˆåŠŸ" << std::endl;
                 exchange_level_flag = true;
                 cur_level = 0;
             }
@@ -51,15 +57,15 @@ inline void InitWaiting_() {
 }
 
 inline void InputWaiting_() {
-    //ÊäÈë¼à²â
+    //è¾“å…¥ç›‘æµ‹
     GetCursorPos(&pt);
-    HWND hwnd = GetForegroundWindow();//»ñÈ¡µ±Ç°´°¿Ú¾ä±ú
-    ScreenToClient(hwnd,&pt);//½«×ø±ê×ªÎªÏà¶ÔÓÚ´°¿ÚµÄ×ø±ê
+    HWND hwnd = GetForegroundWindow();//è·å–å½“å‰çª—å£å¥æŸ„
+    ScreenToClient(hwnd,&pt);//å°†åæ ‡è½¬ä¸ºç›¸å¯¹äºçª—å£çš„åæ ‡
     if (InArea_(0,0,100,50) && GetAsyncKeyState(VK_LBUTTON)& 0x0001) {
         char buf[32];
         int len = sprintf(buf,"%d",EXIT_QUEUE);
         send(server_socket,buf,len,0);
-        std::cout << "·¢ËÍEXIT_QUEUEÍË³öµÈ´ı¶ÓÁĞÏûÏ¢" << std::endl;
+        std::cout << "å‘é€EXIT_QUEUEé€€å‡ºç­‰å¾…é˜Ÿåˆ—æ¶ˆæ¯" << std::endl;
     }
 }
 
@@ -75,9 +81,9 @@ inline void RenderWaiting_() {
         setfillcolor(WHITE);
     }
     fillroundrect(0,0,100,50,10,10);
-    settextstyle(0,0,"Î¢ÈíÑÅºÚ");
-    outtextxy(30,10,"·µ»Ø");
+    settextstyle(0,0,"å¾®è½¯é›…é»‘");
+    outtextxy(30,10,"è¿”å›");
 
-    settextstyle(150,0,"Î¢ÈíÑÅºÚ");
-    outtextxy(250,150,"Æ¥ÅäÖĞ");
+    settextstyle(150,0,"å¾®è½¯é›…é»‘");
+    outtextxy(250,150,"åŒ¹é…ä¸­");
 }

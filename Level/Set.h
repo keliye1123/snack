@@ -36,8 +36,8 @@ inline void SetRRender_() {
         setfillcolor(WHITE);
     }
     fillroundrect(0,0,100,50,10,10);
-    settextstyle(0,0,"Î¢ÈíÑÅºÚ");
-    outtextxy(30,10,"·µ»Ø");
+    settextstyle(0,0,"å¾®è½¯é›…é»‘");
+    outtextxy(30,10,"è¿”å›ž");
 
     setfillcolor(YELLOW);
     if (InArea_(300,390,350,410)) {
@@ -52,8 +52,8 @@ inline void SetRRender_() {
     fillrectangle(515,375,535,425);
     fillrectangle(500,390,550,410);
 
-    settextstyle(50,20,"Î¢ÈíÑÅºÚ");
-    outtextxy(400,300,"ËÙ¶È");
+    settextstyle(50,20,"å¾®è½¯é›…é»‘");
+    outtextxy(400,300,"é€Ÿåº¦");
     outtextxy(400,370,Set_s);
 
 }

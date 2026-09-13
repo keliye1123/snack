@@ -1,7 +1,7 @@
 
 
 class World {
-    //ÊôĞÔ
+    //å±æ€§
 private:
 
 public:
