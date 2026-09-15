@@ -20,6 +20,7 @@ private:
     std::vector<Word> candidates_;                                      //当前拼音对用的汉字数组
     int selectedIndex_;                                                 //当前选择的数组下标
     bool IsRun_;                                                        //是否处于运行状态
+    bool IsChinese;                                                     //是否处于中文输入法
 
     //方法
 private:
@@ -28,6 +29,8 @@ private:
 
 public:
     InputMethod();
+
+    void Draw_();       //渲染输入法窗口
 
     static std::string WStringToString(const std::wstring& wstr);//wstring转string
 
@@ -50,7 +53,7 @@ public:
     [[nodiscard]] int GetSelectedIndex_() const;
     void SetSelectedIndex_(int index);
 
-    [[nodiscard]] bool GetCaps_() const;
+    static bool GetCaps_() ;
 
     std::vector<Word> RunInputMethod_(std::string& name_);//运行
 

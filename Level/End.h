@@ -74,6 +74,7 @@ inline void InputEnd_() {
 }
 
 inline void RenderEnd_() {
+    inputMethod.Draw_();
     settextstyle(50,20,"微软雅黑");
     outtextxy(200,300,"最终的分：");
     outtextxy(400,300,s);

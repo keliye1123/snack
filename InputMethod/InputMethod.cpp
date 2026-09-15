@@ -4,21 +4,23 @@
 
 #include "InputMethod.h"
 #include <algorithm>
-#include <fstream>
-#include <sstream>
 #include <locale>
-#include <codecvt>
 #include <iostream>
 #include <windows.h>
 #include <conio.h>
+#include <easyx.h>
+#include "../basic.h"
+
+#include <imm.h>
+#pragma comment(lib, "imm32.lib")
 
 //wstring转string
 std::string InputMethod::WStringToString(const std::wstring& wstr)
 {
     if (wstr.empty()) return "";
-    int size_needed = WideCharToMultiByte(CP_ACP, 0, &wstr[0], (int)wstr.size(), NULL, 0, NULL, NULL);
+    int size_needed = WideCharToMultiByte(CP_ACP, 0, &wstr[0], (int)wstr.size(), nullptr, 0, nullptr, nullptr);
     std::string strTo(size_needed, 0);
-    WideCharToMultiByte(CP_ACP, 0, &wstr[0], (int)wstr.size(), &strTo[0], size_needed, NULL, NULL);
+    WideCharToMultiByte(CP_ACP, 0, &wstr[0], (int)wstr.size(), &strTo[0], size_needed, nullptr, nullptr);
     return strTo;
 }
 
@@ -121,7 +123,7 @@ void InputMethod::LoadDefaultDictionary_() {
 
 
 //初始化（初始当前选择的下标和加载词库）
-InputMethod::InputMethod() : selectedIndex_(0),IsRun_(false) {
+InputMethod::InputMethod() : selectedIndex_(0),IsRun_(false),IsChinese(false) {
     std::cout << "词库初始化成功" << std::endl;
     LoadDefaultDictionary_();
 }
@@ -214,17 +216,17 @@ void InputMethod::SortCandidates_() {
         });
 }
 
-bool InputMethod::GetCaps_() const {
-    return GetAsyncKeyState(VK_CAPITAL) & 1;
+bool InputMethod::GetCaps_() {
+    return (GetKeyState(VK_CAPITAL) & 0x0001) != 0;
 }
 
 std::vector<Word> InputMethod::RunInputMethod_(std::string& name_) {
-
     std::wstring name = StringToWstring(name_);
 
     //未锁定大写模式
    if (!GetCaps_()) {
-       if (GetAsyncKeyState('A') & 0x8000) { inputMethod.InputPinyin_('a');inputMethod.SetStatus_(true); }
+       if (IsChinese) {//处于中文输入法
+           if (GetAsyncKeyState('A') & 0x8000) { inputMethod.InputPinyin_('a');inputMethod.SetStatus_(true); }
        else if (GetAsyncKeyState('B') & 0x8000) { inputMethod.InputPinyin_('b');inputMethod.SetStatus_(true); }
        else if (GetAsyncKeyState('C') & 0x8000) { inputMethod.InputPinyin_('c');inputMethod.SetStatus_(true); }
        else if (GetAsyncKeyState('D') & 0x8000) { inputMethod.InputPinyin_('d');inputMethod.SetStatus_(true); }
@@ -250,12 +252,94 @@ std::vector<Word> InputMethod::RunInputMethod_(std::string& name_) {
        else if (GetAsyncKeyState('X') & 0x8000) { inputMethod.InputPinyin_('x');inputMethod.SetStatus_(true); }
        else if (GetAsyncKeyState('Y') & 0x8000) { inputMethod.InputPinyin_('y');inputMethod.SetStatus_(true); }
        else if (GetAsyncKeyState('Z') & 0x8000) { inputMethod.InputPinyin_('z');inputMethod.SetStatus_(true); }
+       else if (GetAsyncKeyState(VK_LSHIFT) & 0x8000){ IsChinese = !IsChinese;std::cout << "切换为英文输入法" << std::endl;}
+       else if (GetAsyncKeyState(VK_RSHIFT) & 0x8000){ IsChinese = !IsChinese;std::cout << "切换为英文输入法" << std::endl;}
        else if (GetAsyncKeyState(VK_LEFT) & 0x8000){ SetSelectedIndex_(selectedIndex_ - 1); }
        else if (GetAsyncKeyState(VK_RIGHT) & 0x8000) { SetSelectedIndex_(selectedIndex_ + 1); }
        else if (GetAsyncKeyState(VK_BACK) & 0x8000) {inputMethod.DeletePinyin_();}
        else if ((GetAsyncKeyState(VK_RETURN) & 0x8000) && !currentPinyin_.empty()){name += SelectCandidate_();inputMethod.SetStatus_(false);}
-   }else {//锁定大写模式
 
+       }
+       else {//处于英文输入法
+           if (GetAsyncKeyState('A') & 0x8000) { name += 'a'; }
+           else if (GetAsyncKeyState('B') & 0x8000) { name += 'b'; }
+           else if (GetAsyncKeyState('C') & 0x8000) { name += 'c'; }
+           else if (GetAsyncKeyState('D') & 0x8000) { name += 'd'; }
+           else if (GetAsyncKeyState('E') & 0x8000) { name += 'e'; }
+           else if (GetAsyncKeyState('F') & 0x8000) { name += 'f'; }
+           else if (GetAsyncKeyState('G') & 0x8000) { name += 'g'; }
+           else if (GetAsyncKeyState('H') & 0x8000) { name += 'h'; }
+           else if (GetAsyncKeyState('I') & 0x8000) { name += 'i'; }
+           else if (GetAsyncKeyState('J') & 0x8000) { name += 'j'; }
+           else if (GetAsyncKeyState('K') & 0x8000) { name += 'k'; }
+           else if (GetAsyncKeyState('L') & 0x8000) { name += 'l'; }
+           else if (GetAsyncKeyState('M') & 0x8000) { name += 'm'; }
+           else if (GetAsyncKeyState('N') & 0x8000) { name += 'n'; }
+           else if (GetAsyncKeyState('O') & 0x8000) { name += 'o'; }
+           else if (GetAsyncKeyState('P') & 0x8000) { name += 'p'; }
+           else if (GetAsyncKeyState('Q') & 0x8000) { name += 'q'; }
+           else if (GetAsyncKeyState('R') & 0x8000) { name += 'r'; }
+           else if (GetAsyncKeyState('S') & 0x8000) { name += 's'; }
+           else if (GetAsyncKeyState('T') & 0x8000) { name += 'T'; }
+           else if (GetAsyncKeyState('U') & 0x8000) { name += 'u'; }
+           else if (GetAsyncKeyState('V') & 0x8000) { name += 'v'; }
+           else if (GetAsyncKeyState('W') & 0x8000) { name += 'w'; }
+           else if (GetAsyncKeyState('X') & 0x8000) { name += 'x'; }
+           else if (GetAsyncKeyState('Y') & 0x8000) { name += 'y'; }
+           else if (GetAsyncKeyState('Z') & 0x8000) { name += 'z'; }
+           else if (GetAsyncKeyState('0') & 0x8000) { name += '0'; }
+           else if (GetAsyncKeyState('1') & 0x8000) { name += '1'; }
+           else if (GetAsyncKeyState('2') & 0x8000) { name += '2'; }
+           else if (GetAsyncKeyState('3') & 0x8000) { name += '3'; }
+           else if (GetAsyncKeyState('4') & 0x8000) { name += '4'; }
+           else if (GetAsyncKeyState('5') & 0x8000) { name += '5'; }
+           else if (GetAsyncKeyState('6') & 0x8000) { name += '6'; }
+           else if (GetAsyncKeyState('7') & 0x8000) { name += '7'; }
+           else if (GetAsyncKeyState('8') & 0x8000) { name += '8'; }
+           else if (GetAsyncKeyState('9') & 0x8000) { name += '9'; }
+           else if (GetAsyncKeyState(VK_LSHIFT) & 0x8000){ IsChinese = !IsChinese;std::cout << "切换为中午输入法" << std::endl;}
+           else if (GetAsyncKeyState(VK_RSHIFT) & 0x8000){ IsChinese = !IsChinese;std::cout << "切换为中文输入法" << std::endl;}
+       }
+
+   }else {//锁定大写模式
+       if (GetAsyncKeyState('A') & 0x8000) { name += 'A'; }
+       else if (GetAsyncKeyState('B') & 0x8000) { name += 'B'; }
+       else if (GetAsyncKeyState('C') & 0x8000) { name += 'C'; }
+       else if (GetAsyncKeyState('D') & 0x8000) { name += 'D'; }
+       else if (GetAsyncKeyState('E') & 0x8000) { name += 'E'; }
+       else if (GetAsyncKeyState('F') & 0x8000) { name += 'F'; }
+       else if (GetAsyncKeyState('G') & 0x8000) { name += 'G'; }
+       else if (GetAsyncKeyState('H') & 0x8000) { name += 'H'; }
+       else if (GetAsyncKeyState('I') & 0x8000) { name += 'I'; }
+       else if (GetAsyncKeyState('J') & 0x8000) { name += 'J'; }
+       else if (GetAsyncKeyState('K') & 0x8000) { name += 'K'; }
+       else if (GetAsyncKeyState('L') & 0x8000) { name += 'L'; }
+       else if (GetAsyncKeyState('M') & 0x8000) { name += 'M'; }
+       else if (GetAsyncKeyState('N') & 0x8000) { name += 'N'; }
+       else if (GetAsyncKeyState('O') & 0x8000) { name += 'O'; }
+       else if (GetAsyncKeyState('P') & 0x8000) { name += 'P'; }
+       else if (GetAsyncKeyState('Q') & 0x8000) { name += 'Q'; }
+       else if (GetAsyncKeyState('R') & 0x8000) { name += 'R'; }
+       else if (GetAsyncKeyState('S') & 0x8000) { name += 'S'; }
+       else if (GetAsyncKeyState('T') & 0x8000) { name += 'T'; }
+       else if (GetAsyncKeyState('U') & 0x8000) { name += 'U'; }
+       else if (GetAsyncKeyState('V') & 0x8000) { name += 'V'; }
+       else if (GetAsyncKeyState('W') & 0x8000) { name += 'W'; }
+       else if (GetAsyncKeyState('X') & 0x8000) { name += 'X'; }
+       else if (GetAsyncKeyState('Y') & 0x8000) { name += 'Y'; }
+       else if (GetAsyncKeyState('Z') & 0x8000) { name += 'Z'; }
+       else if (GetAsyncKeyState('0') & 0x8000) { name += '0'; }
+       else if (GetAsyncKeyState('1') & 0x8000) { name += '1'; }
+       else if (GetAsyncKeyState('2') & 0x8000) { name += '2'; }
+       else if (GetAsyncKeyState('3') & 0x8000) { name += '3'; }
+       else if (GetAsyncKeyState('4') & 0x8000) { name += '4'; }
+       else if (GetAsyncKeyState('5') & 0x8000) { name += '5'; }
+       else if (GetAsyncKeyState('6') & 0x8000) { name += '6'; }
+       else if (GetAsyncKeyState('7') & 0x8000) { name += '7'; }
+       else if (GetAsyncKeyState('8') & 0x8000) { name += '8'; }
+       else if (GetAsyncKeyState('9') & 0x8000) { name += '9'; }
+       else if (GetAsyncKeyState(VK_LSHIFT) & 0x8000){ IsChinese = !IsChinese;if (IsChinese) {std::cout << "切换为中文" << std::endl;}else{std::cout << "切换为英文" << std::endl;}}
+       else if (GetAsyncKeyState(VK_RSHIFT) & 0x8000){ IsChinese = !IsChinese;if (!IsChinese) {std::cout << "切换为中文" << std::endl;}else{std::cout << "切换为英文" << std::endl;}}
     }
 
     //在输入法状态时回车：删除一个拼音
@@ -265,7 +349,7 @@ std::vector<Word> InputMethod::RunInputMethod_(std::string& name_) {
     std::cout << "当前下标为为："<<inputMethod.GetSelectedIndex_()<<std::endl;
     std::cout << "当前队列为：";
     for (const auto& i : candidates_) {
-        std::cout << WStringToString(i.text.c_str()) <<" ";
+        std::cout << WStringToString(i.text) <<" ";
     }
     std::cout << std::endl;
 
