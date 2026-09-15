@@ -67,7 +67,7 @@ extern bool exchange_dir;        //当前主机玩家的方向是否改变
 extern ExMessage msg;            //消息队列
 
 typedef struct people {
-    char name[MAXSIZE] = {};//MAXSIZE = 10
+    std::string name;//MAXSIZE = 10
     int  score = 0;
 }players;
 

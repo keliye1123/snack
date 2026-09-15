@@ -1,5 +1,5 @@
 #pragma once
-#include<WinSock2.h>
+#include<windows.h>
 #pragma comment(lib,"ws2_32.lib")
 #include <string>
 #define SPORT 5005//服务器端口号

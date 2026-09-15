@@ -2,7 +2,6 @@
 #include <ranges>
 
 #include "basic.h"
-#include<WinSock2.h>
 #pragma comment(lib,"ws2_32.lib")
 #define SPORT 5005//服务器端口号
 

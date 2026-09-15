@@ -145,12 +145,12 @@ inline void DrawPlayerScore_() {
     char s[20];
     sprintf(s,"玩家1得分：%d",player1_score);
     settextcolor(BLUE);
-    settextstyle(50,0,"微软雅黑");
+    settextstyle(50,0,"");
     outtextxy(0,HEIGHT,s);
 
     sprintf(s,"玩家2得分：%d",player2_score);
     settextcolor(GREEN);
-    settextstyle(50,0,"微软雅黑");
+    settextstyle(50,0,"");
     outtextxy(450,HEIGHT,s);
 }
 

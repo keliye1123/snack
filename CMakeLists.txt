@@ -13,9 +13,10 @@ add_executable(snack main.cpp
         World.cpp
         Client/Socket_Client.cpp
         Thread/poll.cpp
+        InputMethod/InputMethod.cpp
 )
 
 target_link_libraries(snack
-        ${CMAKE_SOURCE_DIR}/easyX/lib64/libeasyx.a
+        ${CMAKE_SOURCE_DIR}/easyX/lib64/EasyXa.lib
         ws2_32
         )

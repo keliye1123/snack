@@ -1,23 +1,25 @@
 # pragma once
 #include <string>
+#include <utility>
 #include <vector>
 #include <unordered_map>
 #include <windows.h>
 
 struct Word {
-    std::string text;
+    std::wstring text;
     int frequency;
 
-    Word(const std::string& t = "", int f = 0) : text(t), frequency(f) {}
+    Word(std::wstring  t = L"", int f = 0) : text(std::move(t)), frequency(f) {}
 };
 
 class InputMethod {
     //属性
 private:
-    std::unordered_map<std::string, std::vector<Word>> dictionary_;     //词库
-    std::string currentPinyin_;                                         //当前的拼音
+    std::unordered_map<std::wstring, std::vector<Word>> dictionary_;     //词库
+    std::wstring currentPinyin_;                                         //当前的拼音
     std::vector<Word> candidates_;                                      //当前拼音对用的汉字数组
     int selectedIndex_;                                                 //当前选择的数组下标
+    bool IsRun_;                                                        //是否处于运行状态
 
     //方法
 private:
@@ -27,22 +29,26 @@ private:
 public:
     InputMethod();
 
-    void AddWord_(const std::string& pinyin, const std::string& word, int frequency = 1);
+    void AddWord_(const std::wstring& pinyin, const std::wstring& word, int frequency = 1);
 
-    void InputPinyin_(char c);
-    void DeletePinyin_();
-    void ClearPinyin_();
+    void SetStatus_(bool s);
 
-    std::vector<Word> GetCandidates_() const;
-    std::string SelectCandidate_(int index);
+    [[nodiscard]] bool GetStatus_() const;
 
-    std::string GetCurrentPinyin_() const;
-    int GetSelectedIndex_() const;
+    void InputPinyin_(char c);//输入拼音
+    void DeletePinyin_();//删除拼音
+    void ClearPinyin_();//清空拼音
+
+    [[nodiscard]] std::vector<Word> GetCandidates_() const;//获得队列
+    std::wstring SelectCandidate_();//获得选中的汉字
+
+    [[nodiscard]] std::wstring GetCurrentPinyin_() const;
+    [[nodiscard]] int GetSelectedIndex_() const;
     void SetSelectedIndex_(int index);
 
-    bool GetCaps_() const;
+    [[nodiscard]] bool GetCaps_() const;
 
-    void RunInputMethod_(int& len);//运行
+    std::vector<Word> RunInputMethod_(std::wstring& name);//运行
 
     // void SaveDictionary_(const std::string& filename) const;
     // void LoadDictionary_(const std::string& filename);
