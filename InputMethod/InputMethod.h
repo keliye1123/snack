@@ -29,6 +29,10 @@ private:
 public:
     InputMethod();
 
+    static std::string WStringToString(const std::wstring& wstr);//wstring转string
+
+    static std::wstring StringToWstring(const std::string& str);//string转wstring
+
     void AddWord_(const std::wstring& pinyin, const std::wstring& word, int frequency = 1);
 
     void SetStatus_(bool s);
@@ -48,7 +52,7 @@ public:
 
     [[nodiscard]] bool GetCaps_() const;
 
-    std::vector<Word> RunInputMethod_(std::wstring& name);//运行
+    std::vector<Word> RunInputMethod_(std::string& name_);//运行
 
     // void SaveDictionary_(const std::string& filename) const;
     // void LoadDictionary_(const std::string& filename);

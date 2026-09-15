@@ -13,13 +13,25 @@
 #include <conio.h>
 
 //wstring转string
-std::string WStringToString(const std::wstring& wstr)
+std::string InputMethod::WStringToString(const std::wstring& wstr)
 {
     if (wstr.empty()) return "";
     int size_needed = WideCharToMultiByte(CP_ACP, 0, &wstr[0], (int)wstr.size(), NULL, 0, NULL, NULL);
     std::string strTo(size_needed, 0);
     WideCharToMultiByte(CP_ACP, 0, &wstr[0], (int)wstr.size(), &strTo[0], size_needed, NULL, NULL);
     return strTo;
+}
+
+//string转wstring
+std::wstring InputMethod::StringToWstring(const std::string& str)
+{
+    if (str.empty()) return L"";
+
+    int len = MultiByteToWideChar(CP_ACP, 0, str.c_str(), -1, nullptr, 0);
+    std::wstring wstr(len, 0);
+    MultiByteToWideChar(CP_ACP, 0, str.c_str(), -1, &wstr[0], len);
+    wstr.pop_back(); // 去掉末尾自动追加的'\0'
+    return wstr;
 }
 
 //输入法词库
@@ -206,7 +218,10 @@ bool InputMethod::GetCaps_() const {
     return GetAsyncKeyState(VK_CAPITAL) & 1;
 }
 
-std::vector<Word> InputMethod::RunInputMethod_(std::wstring& name) {
+std::vector<Word> InputMethod::RunInputMethod_(std::string& name_) {
+
+    std::wstring name = StringToWstring(name_);
+
     //未锁定大写模式
    if (!GetCaps_()) {
        if (GetAsyncKeyState('A') & 0x8000) { inputMethod.InputPinyin_('a');inputMethod.SetStatus_(true); }
@@ -243,6 +258,8 @@ std::vector<Word> InputMethod::RunInputMethod_(std::wstring& name) {
 
     }
 
+    //在输入法状态时回车：删除一个拼音
+    if ((GetAsyncKeyState(VK_BACK) & 0x8000) && inputMethod.GetStatus_() == false) {name.pop_back();}
 
     std::cout << "当拼音为："<<WStringToString(inputMethod.GetCurrentPinyin_()) << std::endl;
     std::cout << "当前下标为为："<<inputMethod.GetSelectedIndex_()<<std::endl;
@@ -251,6 +268,8 @@ std::vector<Word> InputMethod::RunInputMethod_(std::wstring& name) {
         std::cout << WStringToString(i.text.c_str()) <<" ";
     }
     std::cout << std::endl;
+
+    name_ = WStringToString(name);
     return inputMethod.GetCandidates_();
 
 }

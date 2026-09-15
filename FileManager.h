@@ -8,17 +8,17 @@
 
 inline void ReadFile_() {
 
-    std::wifstream ifs(L"rank.txt",std::ios::in);
+    std::ifstream ifs("rank.txt",std::ios::in);
 
     //文件不存在
     if (!ifs.is_open()) {
-        std::wofstream ofs(L"rank.txt",std::ios::out);
+        std::ofstream ofs("rank.txt",std::ios::out);
         ofs << len1 << std::endl;
         ofs << len2 << std::endl;
-        ifs.open(L"rank.txt",std::ios::in);
+        ifs.open("rank.txt",std::ios::in);
     }
 
-    std::wstring temp1;
+    std::string temp1;
     ifs >> temp1;
     len1 = (int)temp1.size();
     ifs >> temp1;
@@ -41,7 +41,7 @@ inline void ReadFile_() {
 
 inline void WriteFile_() {
 
-    std::wofstream ofs("rank.txt",std::ios::out);
+    std::ofstream ofs("rank.txt",std::ios::out);
 
     ofs << len1 << std::endl;
     ofs << len2 << std::endl;

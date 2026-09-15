@@ -3,8 +3,7 @@
 #include "../InputMethod/InputMethod.h"
 
 inline char s[10];
-inline std::wstring name;//宽字符字符串
-inline char cstr[256] = {};//窄字符字符串
+inline std::string name;//宽字符字符串
 inline std::vector<Word> words;
 
 inline bool key_lock = false;
@@ -49,7 +48,6 @@ inline void InitEnd_() {
         memset(s,0,sizeof(s));
         name.clear();
         sprintf(s,"%d",score);
-        memset(cstr,0,sizeof(cstr));
         exchange_level_flag = false;
     }
 
@@ -61,6 +59,7 @@ inline void InputEnd_() {
     if (msg.message == WM_KEYDOWN && !key_lock) {
         key_lock = true;
 
+        //未处于输入法时回车：完成输入并退出
         if ((GetAsyncKeyState(VK_RETURN) & 0x8000) && inputMethod.GetStatus_() == false) {
             WriteScore_();
             cur_level = 0;
@@ -69,9 +68,6 @@ inline void InputEnd_() {
         }
 
         words = inputMethod.RunInputMethod_(name);
-        if ((GetAsyncKeyState(VK_BACK) & 0x8000) && inputMethod.GetStatus_() == false) {
-            name.pop_back();
-        }
     }
     else if (msg.message == WM_KEYUP && key_lock) key_lock = false;
 
@@ -82,8 +78,7 @@ inline void RenderEnd_() {
     outtextxy(200,300,"最终的分：");
     outtextxy(400,300,s);
     outtextxy(200,400,"输入昵称：");
-    WideCharToMultiByte(CP_UTF8,0,name.c_str(),(int)name.size(),cstr,256,nullptr,nullptr);
-    outtextxy(400,400,cstr);
+    outtextxy(400,400,name.c_str());
 }
 
 
