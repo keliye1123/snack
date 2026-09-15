@@ -19,4 +19,5 @@ add_executable(snack main.cpp
 target_link_libraries(snack
         ${CMAKE_SOURCE_DIR}/easyX/lib64/EasyXa.lib
         ws2_32
+        imm32
         )

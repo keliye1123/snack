@@ -24,12 +24,12 @@ inline void RenderRank_() {
     outtextxy(500,150,"无限模式");
     for (int i=0;i<len1;i++) {
         char pl1[10];
-        sprintf(pl1,"%d.%ls %d",i+1,players1[i].name.data(),players1[i].score);
+        sprintf(pl1,"%d.%s %d",i+1,players1[i].name.data(),players1[i].score);
         outtextxy(150,150 + i*50+50,pl1);
     }
     for (int i=0;i<len2;i++) {
         char pl2[10];
-        sprintf(pl2,"%d.%ls %d",i+1,players2[i].name.data(),players2[i].score);
+        sprintf(pl2,"%d.%s %d",i+1,players2[i].name.data(),players2[i].score);
         outtextxy(500,150 + i*50+50,pl2);
     }
 
