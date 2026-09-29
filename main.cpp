@@ -35,7 +35,6 @@ public:
             cleardevice();
 
             mainWorld.Render_();
-            DrawFPS_();
 
             EndBatchDraw();
 

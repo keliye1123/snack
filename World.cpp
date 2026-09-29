@@ -119,4 +119,5 @@ void World::Render_() {
         default:
             break;
     }
+    DrawFPS_();
 }

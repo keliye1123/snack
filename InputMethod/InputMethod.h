@@ -15,8 +15,8 @@ struct Word {
 class InputMethod {
     //属性
 private:
-    std::unordered_map<std::wstring, std::vector<Word>> dictionary_;     //词库
-    std::wstring currentPinyin_;                                         //当前的拼音
+    std::unordered_map<std::string, std::vector<Word>> dictionary_;     //词库
+    std::string currentPinyin_;                                         //当前的拼音
     std::vector<Word> candidates_;                                      //当前拼音对用的汉字数组
     int selectedIndex_;                                                 //当前选择的数组下标
     bool IsRun_;                                                        //是否处于运行状态
@@ -32,13 +32,13 @@ private:
 public:
     InputMethod();
 
-    void Draw_(int x,int y);       //渲染输入法窗口
+    void Draw_(int x,int y) const;       //渲染输入法窗口
 
     static std::string WStringToString(const std::wstring& wstr);//wstring转string
 
     static std::wstring StringToWstring(const std::string& str);//string转wstring
 
-    void AddWord_(const std::wstring& pinyin, const std::wstring& word, int frequency = 1);
+    void AddWord_(const std::string& pinyin, const std::wstring& word, int frequency = 1);
 
     void SetStatus_(bool s);
 
@@ -51,7 +51,7 @@ public:
     [[nodiscard]] std::vector<Word> GetCandidates_() const;//获得队列
     std::wstring SelectCandidate_();//获得选中的汉字
 
-    [[nodiscard]] std::wstring GetCurrentPinyin_() const;
+    [[nodiscard]] std::string GetCurrentPinyin_() const;
     [[nodiscard]] int GetSelectedIndex_() const;
     void SetSelectedIndex_(int index);
 
