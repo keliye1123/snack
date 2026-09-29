@@ -4,10 +4,14 @@
 
 class World {
     //属性
-private:
-    LevelManager* currentLevel = nullptr;
+public:
+    LevelManager* levelManager = nullptr;
 
 public:
+    void Init_();
+
+    void Begin_();
+
     void Input_();
 
     void Update_();

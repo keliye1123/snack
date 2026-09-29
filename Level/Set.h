@@ -4,13 +4,17 @@
 
 inline char Set_s[3];
 
+inline void SetInit_() {
+
+}
+
 inline void SetInput_() {
     GetCursorPos(&pt);
     HWND hwnd = GetForegroundWindow();
     ScreenToClient(hwnd,&pt);
     if (InArea_(0,0,100,50) && GetAsyncKeyState(VK_LBUTTON)& 0x0001) {
-        cur_level = 0;
-        exchange_level_flag = true;
+        mainWorld.levelManager -> SetChangeLevel("Menu");
+        mainWorld.levelManager -> SetFlag_(true);
         return;
     }
     if (InArea_(300,390,350,410) && (GetAsyncKeyState(VK_LBUTTON)& 0x0001)) {
@@ -27,6 +31,10 @@ inline void SetInput_() {
     }
 
     sprintf(Set_s,"%d",10 - speed);
+}
+
+inline void SetUpdate_() {
+
 }
 
 inline void SetRRender_() {

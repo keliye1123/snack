@@ -14,6 +14,8 @@ add_executable(snack main.cpp
         Client/Socket_Client.cpp
         Thread/poll.cpp
         InputMethod/InputMethod.cpp
+        LevelManager/Level.cpp
+        LevelManager/LevelManager.cpp
 )
 
 target_link_libraries(snack

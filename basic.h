@@ -10,19 +10,13 @@
 #define HEAD_POSITION_Y  300    //蛇头初始y位置
 #define ORIGIN_DIRECTION RIGHT  //蛇的初始方向
 #define MAXSIZE 10              //字符串最大长度
-#define  MAX_PLAYERS 5          //排行榜最大人数
 #define FPS 60                  //游戏帧率
 #define FPS_GAP 12              //每隔12帧刷新FPS显示
 #define SPEED 2                 //初始速度
 
-extern int before_level;  //之前场景
-extern int cur_level;  //当前场景
-extern bool exchange_level_flag;
 extern int speed;                  //速度
 extern int speed_gap;              //速度间隔
 extern int score;                  //分数
-extern int len1;                   //围城模式的排行榜人数
-extern int len2;                   //无限模式的排行榜人数
 
 extern long long delta_time;      //单帧时间间隔
 extern int FPS_gap;               //设置FPS的渲染间隔帧数
@@ -66,16 +60,8 @@ extern bool exchange_dir;        //当前主机玩家的方向是否改变
 
 extern ExMessage msg;            //消息队列
 
-typedef struct people {
-    std::string name;//MAXSIZE = 10
-    int  score = 0;
-}players;
-
 //为房间对战提前创建线程
 extern ThreadPoll pool;
-
-extern players players1[MAX_PLAYERS];
-extern players players2[MAX_PLAYERS];
 
 extern bool map[HEIGHT/SIZE][WIDTH/SIZE];//全局地图
 
@@ -95,9 +81,6 @@ bool InArea_(int x1,int y1,int x2,int y2);
 
 //获取随机数
 int RandInt_(int lower,int upper);
-
-//排序
-void BubbleSort(players players_[],int len);
 
 //初始化蛇
 void InitSnack_();

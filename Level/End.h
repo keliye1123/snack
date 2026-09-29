@@ -10,7 +10,7 @@ inline bool key_lock = false;
 
 inline void WriteScore_() {
 
-    if (before_level == 1) {
+    if (mainWorld.levelManager -> GetCurrentLevelName() == "map1") {
 
         if (len1 <= 4){
             players1[len1].name = name;
@@ -24,7 +24,7 @@ inline void WriteScore_() {
         BubbleSort(players1,len1);
 
     }
-    else if (before_level == 3) {
+    else if (mainWorld.levelManager -> GetCurrentLevelName() == "map2") {
 
         if (len2 <= 4) {
             players2[len2].name = name;
@@ -43,13 +43,10 @@ inline void WriteScore_() {
 }
 
 inline void InitEnd_() {
-    if (exchange_level_flag == true) {
 
         memset(s,0,sizeof(s));
         name.clear();
         sprintf(s,"%d",score);
-        exchange_level_flag = false;
-    }
 
 }
 
@@ -62,14 +59,18 @@ inline void InputEnd_() {
         //未处于输入法时回车：完成输入并退出
         if ((GetAsyncKeyState(VK_RETURN) & 0x8000) && inputMethod.GetStatus_() == false) {
             WriteScore_();
-            cur_level = 0;
-            exchange_level_flag = true;
+            mainWorld.levelManager -> SetChangeLevel("Menu");
+            mainWorld.levelManager -> SetFlag_(true);
             return;
         }
 
         words = inputMethod.RunInputMethod_(name);
     }
     else if (msg.message == WM_KEYUP && key_lock) key_lock = false;
+
+}
+
+inline void UpdateEnd_() {
 
 }
 

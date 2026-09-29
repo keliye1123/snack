@@ -4,16 +4,15 @@
 #include "../Client/Socket_Client.h"
 
 inline void InitWaiting_() {
-    if (exchange_level_flag == true) {
         //与服务器建立连接
         //初始化socket库
         InitSocket_();
 
         server_socket = ConnectToServer_(SPORT,"8.156.69.189");
         if (server_socket == -1) {
-            exchange_level_flag = true;
+            mainWorld.levelManager -> SetFlag_(true);
             std::cout << "连接到服务器失败" << std::endl;
-            cur_level = 0;
+            mainWorld.levelManager -> SetChangeLevel("Menu");
             return;
         }
         pool.enqueue([] {
@@ -40,19 +39,16 @@ inline void InitWaiting_() {
                 std::cout<<"接收到玩家编号"<<std::endl;
                 std::cout<<"cur_player: "<<cur_player<<(cur_player == 1 ? "蓝色" :"绿色")<<std::endl;
 
-                exchange_level_flag = true;
-                cur_level = 6;
+                mainWorld.levelManager -> SetFlag_(true);
+                mainWorld.levelManager -> SetChangeLevel("Map3");
             }
             else if (res == EXIT_QUEUE) {
                 std::cout << "收到EXIT_QUEUE退出队列成功" << std::endl;
-                exchange_level_flag = true;
-                cur_level = 0;
+                mainWorld.levelManager -> SetFlag_(true);
+                mainWorld.levelManager -> SetChangeLevel("Menu");
             }
         });
 
-
-        exchange_level_flag = false;
-    }
 
 }
 

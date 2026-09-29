@@ -8,7 +8,6 @@ inline int res_x;
 inline int res_y;
 
 inline void InitMap3_() {
-    if (exchange_level_flag == true) {
 
         for (int i = 0;i <= HEIGHT/SIZE-1;i++ ) {
             for (int j = 0;j <= WIDTH/SIZE-1;j++ ) {
@@ -19,9 +18,6 @@ inline void InitMap3_() {
         InitSnack1_();
         InitSnack2_();
 
-        exchange_level_flag = false;
-
-    }
 }
 
 inline void InputMap3_() {
@@ -84,20 +80,20 @@ inline void UpdateMap3_() {
     ac.resize(readn);
     int Dir = stoi(ac.substr(0,1));
     if (Dir == ERRORS) {//网络异常对局结束
-        exchange_level_flag = true;
+        mainWorld.levelManager -> SetFlag_(true);
         std::cout << "对方网络异常，对局结束" <<std::endl;
         std::cout << "你的得分为："<< ((cur_player == 1) ? player1_score : player2_score) << std::endl;
         std::cout << "对方的得分为："<< ((cur_player == 1) ? player2_score : player1_score) << std::endl;
-        cur_level = 0;
+        mainWorld.levelManager -> SetChangeLevel("Menu");
         return ;
     }
     if (Dir == PLAY1WIN || Dir == PLAY2WIN) {
-        exchange_level_flag = true;
+        mainWorld.levelManager -> SetFlag_(true);
         if ((cur_player == 1 && Dir == PLAY1WIN) || (cur_player == 2 && Dir == PLAY2WIN)) std::cout << "你赢了" <<std::endl;
         else std::cout << "你输了" <<std::endl;
         std::cout << "你的得分为："<< ((cur_player == 1) ? player1_score : player2_score) << std::endl;
         std::cout << "对方的得分为："<< ((cur_player == 1) ? player2_score : player1_score) << std::endl;
-        cur_level = 0;
+        mainWorld.levelManager -> SetChangeLevel("Menu");
         return ;
     }
     res_x = stoi(ac.substr(1,3));

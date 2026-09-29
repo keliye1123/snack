@@ -1,32 +1,37 @@
 #pragma once
 #include"../basic.h"
 #include"../FileManager.h"
-
+#include"../World.h"
 //主菜单
+
+inline void MenuInit_() {
+
+}
+
 inline void MenuInput_() {
     //输入监测
     GetCursorPos(&pt);
     HWND hwnd = GetForegroundWindow();//获取当前窗口句柄
     ScreenToClient(hwnd,&pt);//将坐标转为相对于窗口的坐标
     if (InArea_(100,600,200,650) &&(GetAsyncKeyState(VK_LBUTTON)& 0x8000) ) {
-        cur_level = 1;
-        exchange_level_flag = true;
+        mainWorld.levelManager -> SetChangeLevel("Map1");
+        mainWorld.levelManager -> SetFlag_(true);
     }
     else if (InArea_(400,600,500,650) && GetAsyncKeyState(VK_LBUTTON)& 0x8000) {
-        cur_level = 3;
-        exchange_level_flag = true;
+        mainWorld.levelManager -> SetChangeLevel("Map2");
+        mainWorld.levelManager -> SetFlag_(true);
     }
     else if (InArea_(700,600,800,650) && GetAsyncKeyState(VK_LBUTTON)& 0x8000) {
-        cur_level = 4;
-        exchange_level_flag = true;
+        mainWorld.levelManager -> SetChangeLevel("Set");
+        mainWorld.levelManager -> SetFlag_(true);
     }
     else if (InArea_(700,500,800,550) && GetAsyncKeyState(VK_LBUTTON)& 0x8000) {
-        cur_level = 5;
-        exchange_level_flag = true;
+        mainWorld.levelManager -> SetChangeLevel("Rank");
+        mainWorld.levelManager -> SetFlag_(true);
     }
     else if (InArea_(400,500,500,550) && GetAsyncKeyState(VK_LBUTTON)& 0x8000) {
-        cur_level = 7;
-        exchange_level_flag = true;
+        mainWorld.levelManager -> SetChangeLevel("Waiting");
+        mainWorld.levelManager -> SetFlag_(true);
     }
     else if (InArea_(WIDTH - 100,0,WIDTH,50) && GetAsyncKeyState(VK_LBUTTON)& 0x8000){
         WriteFile_();
@@ -36,14 +41,20 @@ inline void MenuInput_() {
 
 }
 
+inline void MenuUpdate_() {
+
+}
+
 inline void MenuRender_() {
     //渲染
     settextcolor(BLACK);
     settextstyle(0,0,"微软雅黑");
     setbkmode(TRANSPARENT);
 
+
     setfillcolor(YELLOW);
     if (InArea_(100,600,200,650)) {
+
         setfillcolor(WHITE);
     }
     fillroundrect(100,600,200,650,10,10);

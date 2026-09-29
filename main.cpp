@@ -16,6 +16,7 @@ public:
         initgraph(WIDTH,HEIGHT + SIZE);
         setbkcolor(RGB(200,200,200));
         cleardevice();
+        mainWorld.Init_();
     }
 
     static void Run_() {
@@ -23,6 +24,8 @@ public:
         std::chrono::steady_clock::time_point end_time;
         while (true) {
             start_time = std::chrono::steady_clock::now();
+
+            mainWorld.Begin_();
             //输入控制
             mainWorld.Input_();
 

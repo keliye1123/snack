@@ -24,3 +24,19 @@ void Level::AddUpdateLevel_(const std::function<void()>& Update) {
 void Level::AddRenderLevel_(const std::function<void()>& Render) {
     this-> RenderLevel = Render;
 }
+
+void Level::RunInit_() {
+    this -> InitLevel();
+}
+
+void Level::RunInput_() {
+    this -> InputLevel();
+}
+
+void Level::RunUpdate_() {
+    this -> UpdateLevel();
+}
+
+void Level::RunRender_() {
+    this -> RenderLevel();
+}

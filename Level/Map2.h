@@ -2,7 +2,7 @@
 #include "../basic.h"
 
 inline void InitMap2_() {
-    if (exchange_level_flag == true) {
+
 
         for (int i = 0;i <= HEIGHT/SIZE-1;i++ ) {
             for (int j = 0;j <= WIDTH/SIZE-1;j++ ) {
@@ -12,10 +12,6 @@ inline void InitMap2_() {
 
         InitSnack_();
         InitFood_();
-
-        exchange_level_flag = false;
-
-    }
 
 }
 
@@ -101,9 +97,8 @@ inline void UpdateMap2_() {
         UpdateSnack2_();
         UpdateFood_();
         if (IsDead_()) {
-            before_level = 3;
-            cur_level = 2;
-            exchange_level_flag = true;
+            mainWorld.levelManager -> SetChangeLevel("End");
+            mainWorld.levelManager -> SetFlag_(true);
             return;
         }
     }else {

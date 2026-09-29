@@ -2,16 +2,24 @@
 #include "../basic.h"
 #include <iostream>
 
+inline void InitRank_() {
+
+}
+
 inline void InputRank_() {
     //监测
     GetCursorPos(&pt);
     HWND hwnd = GetForegroundWindow();
     ScreenToClient(hwnd,&pt);
     if (InArea_(0,0,100,50) && GetAsyncKeyState(VK_LBUTTON)& 0x0001) {
-        exchange_level_flag = true;
-        cur_level = 0;
+        mainWorld.levelManager -> SetFlag_(true);
+        mainWorld.levelManager -> SetChangeLevel("Menu");
         return;
     }
+}
+
+inline void UpdateRank_() {
+
 }
 
 inline void RenderRank_() {

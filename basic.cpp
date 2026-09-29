@@ -1,10 +1,6 @@
 #include "basic.h"
 #include <random>
 
-int before_level = 0;
-int cur_level = 0;
-bool exchange_level_flag = true;
-int level = 0;
 int speed = 10 - SPEED;
 int speed_gap = speed;
 int score = 0;
@@ -32,9 +28,6 @@ ThreadPoll pool(3);
 int cur_player = 0;
 bool exchange_dir = false;
 
-players players1[MAX_PLAYERS];
-players players2[MAX_PLAYERS];
-
 bool map[HEIGHT/SIZE][WIDTH/SIZE];//全局地图
 
 Direction dir = RIGHT;//蛇的方向
@@ -42,6 +35,7 @@ POINT pt;
 
 bool InArea_(int x1,int y1,int x2,int y2) {
     if (pt.x >= x1 and pt.x <= x2 && pt.y >= y1 and pt.y <= y2) {
+
         return true;
     }
     return false;
@@ -61,28 +55,6 @@ int RandInt_(int lower,int upper) {
     }
     std::uniform_int_distribution<int> dis(lower, upper);
     return dis(gen);
-}
-
-void BubbleSort(players players_[],int len)
-{
-    for (int i = len; i > 1; i--)
-    {
-        bool swapped = false;
-
-        for (int j = 0; j + 1 < i; j++)
-        {
-            if (players_[j].score < players_[j + 1].score)
-            {
-                players temp = players_[j];
-                players_[j] = players_[j + 1];
-                players_[j + 1] = temp;
-                swapped = true;
-            }
-        }
-
-        if (!swapped) break;
-
-    }
 }
 
 //初始化蛇

@@ -3,7 +3,7 @@
 #include <iostream>
 
 inline void InitMap1_() {
-    if (exchange_level_flag == true) {
+
         for (int i = 0;i <= HEIGHT/SIZE-1;i++ ) {
             for (int j = 0;j <= WIDTH/SIZE-1;j++ ) {
                 map[i][j] = true;
@@ -21,8 +21,6 @@ inline void InitMap1_() {
         InitSnack_();
         InitFood_();
 
-        exchange_level_flag = false;
-    }
 }
 
 inline void InPutMap1_() {
@@ -92,9 +90,8 @@ inline void UpdateMap1_() {
         UpdateSnack1_();
         UpdateFood_();
         if (IsDead_()) {
-            before_level = 1;
-            cur_level = 2;
-            exchange_level_flag = true;
+            mainWorld.levelManager -> SetChangeLevel("End");
+            mainWorld.levelManager -> SetFlag_(true);
             return;
         }
     }else {
