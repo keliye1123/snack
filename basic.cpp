@@ -4,8 +4,6 @@
 int speed = 10 - SPEED;
 int speed_gap = speed;
 int score = 0;
-int len1 = 0;
-int len2 = 0;
 
 ExMessage msg;
 
@@ -57,53 +55,6 @@ int RandInt_(int lower,int upper) {
     return dis(gen);
 }
 
-//初始化蛇
-void InitSnack_() {
-    S = new Node();
-
-    Node* head = (Node*)malloc(sizeof(Node));
-    Node* mid  = (Node*)malloc(sizeof(Node));
-    Node* tail = (Node*)malloc(sizeof(Node));
-
-    head->next = mid;
-    mid->next = tail;
-    tail->next = NULL;
-
-    head -> x = HEAD_POSITION_X;
-    head -> y = HEAD_POSITION_Y;
-
-    dir = ORIGIN_DIRECTION;
-    score = 0;
-
-    switch (dir) {
-        case LEFT: mid -> x = HEAD_POSITION_X + SIZE;
-            mid -> y = HEAD_POSITION_Y;
-            tail -> x = HEAD_POSITION_X + SIZE*2;
-            tail -> y = HEAD_POSITION_Y;
-            break;
-
-        case UP:   mid -> x = HEAD_POSITION_X;
-            mid -> y = HEAD_POSITION_Y + SIZE;
-            tail -> x = HEAD_POSITION_X;
-            tail -> y = HEAD_POSITION_Y + SIZE*2;
-            break;
-
-
-        case RIGHT:mid -> x = HEAD_POSITION_X - SIZE;
-            mid -> y = HEAD_POSITION_Y;
-            tail -> x = HEAD_POSITION_X - SIZE*2;
-            tail -> y = HEAD_POSITION_Y;
-            break;
-
-        case DOWN: mid -> x = HEAD_POSITION_X;
-            mid -> y = HEAD_POSITION_Y - SIZE;
-            tail -> x = HEAD_POSITION_X;
-            tail -> y = HEAD_POSITION_Y - SIZE*2;
-            break;
-    }
-    S -> next =  head;
-}
-
 //食物初始化
 void InitFood_() {
     Food* food = (Food*)malloc(sizeof(Food));
@@ -132,44 +83,11 @@ void UpdateFood_() {
     F -> exists = true;
 }
 
-bool IsDead_() {
-    if (map[S -> next-> y/SIZE][S -> next-> x/SIZE] == false) {
-        Node* cur = S;
-        while (cur != NULL) {
-            Node* next = cur->next;
-            free(cur);
-            cur = next;
-        }
-        free(F);
-        return true;
-    }
-    return false;
-}
-
 void DrawScore_() {
     char s[20];
     sprintf(s,"得分：%d",score);
     settextstyle(75,0,"微软雅黑");
     outtextxy(0,HEIGHT,s);
-}
-
-void DrawFood_() {
-    if (F -> exists == true) {
-        setfillcolor(RED);
-        fillrectangle(F-> x,F -> y,F-> x + SIZE,F -> y+ SIZE);
-    }
-
-}
-
-//渲染蛇
-void DrawSnack_() {
-    Node* head = S -> next;
-    while (head != NULL) {
-
-        setfillcolor(BLUE);
-        fillrectangle(head -> x,head -> y,head -> x + SIZE,head -> y+ SIZE);
-        head = head -> next;
-    }
 }
 
 //渲染帧率显示

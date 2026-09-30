@@ -15,6 +15,8 @@ World mainWorld;
 
 void World::Init_() {
     levelManager = new LevelManager;
+    leaderBoard = new LeaderBoard;
+    LocalSnack = new Snack;
 }
 
 void World::Begin_() {

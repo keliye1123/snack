@@ -1,6 +1,5 @@
 #pragma once
 #include"../basic.h"
-#include"../FileManager.h"
 #include"../World.h"
 //主菜单
 
@@ -34,7 +33,7 @@ inline void MenuInput_() {
         mainWorld.levelManager -> SetFlag_(true);
     }
     else if (InArea_(WIDTH - 100,0,WIDTH,50) && GetAsyncKeyState(VK_LBUTTON)& 0x8000){
-        WriteFile_();
+        mainWorld.leaderBoard -> WriteFile_();
         exit(0);
     }
 

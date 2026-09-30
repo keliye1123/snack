@@ -2,6 +2,12 @@
 
 #include "LeaderBoard.h"
 
+LeaderBoard::LeaderBoard() {
+    len1 = 0;
+    len2 = 0;
+    ReadFile_();
+}
+
 void LeaderBoard::BubbleSort(players players_[],int len)
 {
     for (int i = len; i > 1; i--)

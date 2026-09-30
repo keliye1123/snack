@@ -16,6 +16,7 @@ add_executable(snack main.cpp
         InputMethod/InputMethod.cpp
         LevelManager/Level.cpp
         LevelManager/LevelManager.cpp
+        LeaderBoard/LeaderBoard.cpp
 )
 
 target_link_libraries(snack

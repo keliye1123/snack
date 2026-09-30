@@ -2,7 +2,6 @@
 #include <chrono>
 #include "basic.h"
 #include "World.h"
-#include "FileManager.h"
 
 class World;
 
@@ -12,7 +11,6 @@ class Engine {
     //方法
 public:
     static void Init_() {
-        ReadFile_();
         initgraph(WIDTH,HEIGHT + SIZE);
         setbkcolor(RGB(200,200,200));
         cleardevice();

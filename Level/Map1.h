@@ -1,6 +1,7 @@
 #pragma once
 #include"../basic.h"
 #include <iostream>
+#include"../World.h"
 
 inline void InitMap1_() {
 
@@ -18,59 +19,51 @@ inline void InitMap1_() {
             map[j][WIDTH/SIZE-1] = false;
         }
 
-        InitSnack_();
+        mainWorld.LocalSnack -> InitSnack_();
         InitFood_();
 
 }
 
 inline void InPutMap1_() {
-    if (GetAsyncKeyState('A') && dir != RIGHT) {
-        dir = LEFT;
-    }
-    else if (GetAsyncKeyState('W') && dir != DOWN) {
-        dir = UP;
-    }
-    else if (GetAsyncKeyState('D') && dir != LEFT) {
-        dir = RIGHT;
-    }
-    else if (GetAsyncKeyState('S') && dir != UP) {
-        dir = DOWN;
-    }
+    if (GetAsyncKeyState('A') && mainWorld.LocalSnack -> GetDir_() != RIGHT) mainWorld.LocalSnack -> SetDir_(LEFT);
+    else if (GetAsyncKeyState('W') && mainWorld.LocalSnack -> GetDir_() != DOWN) mainWorld.LocalSnack -> SetDir_(UP);
+    else if (GetAsyncKeyState('D') && mainWorld.LocalSnack -> GetDir_() != LEFT) mainWorld.LocalSnack -> SetDir_(RIGHT);
+    else if (GetAsyncKeyState('S') && mainWorld.LocalSnack -> GetDir_() != UP) mainWorld.LocalSnack -> SetDir_(DOWN);
 }
 
 inline void  UpdateSnack1_() {
     Node* new_head  = new Node();
 
-    switch (dir) {
-        case LEFT:new_head -> x = S -> next -> x - SIZE;
-            new_head -> y = S -> next -> y;
+    switch (mainWorld.LocalSnack -> GetDir_()) {
+        case LEFT:new_head -> x = mainWorld.LocalSnack -> GetHead() -> next -> x - SIZE;
+            new_head -> y = mainWorld.LocalSnack -> GetHead() -> next -> y;
             break;
 
-        case UP:new_head -> y = S -> next -> y - SIZE;
-            new_head -> x = S -> next -> x;
+        case UP:new_head -> y = mainWorld.LocalSnack -> GetHead() -> next -> y - SIZE;
+            new_head -> x = mainWorld.LocalSnack -> GetHead() -> next -> x;
             break;
 
-        case RIGHT:new_head -> x = S -> next -> x + SIZE;
-            new_head -> y = S -> next -> y;
+        case RIGHT:new_head -> x = mainWorld.LocalSnack -> GetHead() -> next -> x + SIZE;
+            new_head -> y = mainWorld.LocalSnack -> GetHead() -> next -> y;
             break;
 
-        case DOWN:new_head -> y = S -> next -> y + SIZE;
-            new_head -> x = S -> next -> x;
+        case DOWN:new_head -> y = mainWorld.LocalSnack -> GetHead() -> next -> y + SIZE;
+            new_head -> x = mainWorld.LocalSnack -> GetHead() -> next -> x;
             break;
     }
 
-    new_head -> next = S -> next;
-    S -> next = new_head;
+    new_head -> next = mainWorld.LocalSnack -> GetHead() -> next;
+    mainWorld.LocalSnack -> GetHead() -> next = new_head;
 
-    Node* temp = S -> next;
+    Node* temp = mainWorld.LocalSnack -> GetHead() -> next;
     while (temp -> next != nullptr) {
         map[temp -> next ->y/SIZE][temp -> next -> x/SIZE] = false;
         temp = temp -> next;
     }
 
     if (F -> exists == true) {
-        Node* pre = S;
-        Node* delete_tail = S -> next;
+        Node* pre = mainWorld.LocalSnack -> GetHead();
+        Node* delete_tail = mainWorld.LocalSnack -> GetHead() -> next;
         while (delete_tail -> next != nullptr) {
             delete_tail = delete_tail -> next;
             pre = pre -> next;
