@@ -17,6 +17,10 @@ add_executable(snack main.cpp
         LevelManager/Level.cpp
         LevelManager/LevelManager.cpp
         LeaderBoard/LeaderBoard.cpp
+        UI/UI.cpp
+        Snack/Snack.cpp
+        Food/Food.cpp
+        Math.cpp
 )
 
 target_link_libraries(snack

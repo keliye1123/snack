@@ -1,101 +1,35 @@
 #pragma once
-#include "../basic.h"
 #include"../World.h"
 
 inline void InitMap2_() {
-
-
-        for (int i = 0;i <= HEIGHT/SIZE-1;i++ ) {
-            for (int j = 0;j <= WIDTH/SIZE-1;j++ ) {
-                map[i][j] = true;
-            }
+    for (int i = 0;i <= HEIGHT/SIZE-1;i++ ) {
+        for (int j = 0;j <= WIDTH/SIZE-1;j++ ) {
+            mainWorld.map[i][j] = true;
         }
+    }
 
-        mainWorld.LocalSnack -> InitSnack_();
-        InitFood_();
-
+    mainWorld.LocalSnack -> InitSnack_();
+    mainWorld.LocalFood -> InitFood_();
+    mainWorld.leaderBoard -> SetLevelFlag("Map2");
 }
 
 inline void InPutMap2_() {
-    if (GetAsyncKeyState('A') && mainWorld.LocalSnack -> GetDir_() != RIGHT) mainWorld.LocalSnack -> SetDir_(LEFT);
-    else if (GetAsyncKeyState('W') && mainWorld.LocalSnack -> GetDir_() != DOWN) mainWorld.LocalSnack -> SetDir_(UP);
-    else if (GetAsyncKeyState('D') && mainWorld.LocalSnack -> GetDir_() != LEFT) mainWorld.LocalSnack -> SetDir_(RIGHT);
-    else if (GetAsyncKeyState('S') && mainWorld.LocalSnack -> GetDir_() != UP) mainWorld.LocalSnack -> SetDir_(DOWN);
-}
-
-//地图2蛇的移动逻辑
-inline void  UpdateSnack2_() {
-    Node* new_head  = new Node;
-
-    switch (mainWorld.LocalSnack -> GetDir_()) {
-        case LEFT:new_head -> x = mainWorld.LocalSnack -> GetHead() -> next -> x - SIZE;
-            new_head -> y = mainWorld.LocalSnack -> GetHead() -> next -> y;
-            if (new_head -> x < 0) {
-                new_head -> x = WIDTH - SIZE;
-            }
-            break;
-
-        case UP:new_head -> y = mainWorld.LocalSnack -> GetHead() -> next -> y - SIZE;
-            new_head -> x = mainWorld.LocalSnack -> GetHead() -> next -> x;
-            if (new_head -> y < 0) {
-                new_head -> y = HEIGHT - SIZE;
-            }
-            break;
-
-        case RIGHT:new_head -> x = mainWorld.LocalSnack -> GetHead() -> next -> x + SIZE;
-            new_head -> y = mainWorld.LocalSnack -> GetHead() -> next -> y;
-            if (new_head -> x > WIDTH - SIZE) {
-                new_head -> x = 0;
-            }
-            break;
-
-        case DOWN:new_head -> y = mainWorld.LocalSnack -> GetHead() -> next -> y + SIZE;
-            new_head -> x = mainWorld.LocalSnack -> GetHead() -> next -> x;
-            if (new_head -> y > HEIGHT - SIZE) {
-                new_head -> y = 0;
-            }
-            break;
-    }
-
-    new_head -> next = mainWorld.LocalSnack -> GetHead() -> next;
-    mainWorld.LocalSnack -> GetHead() -> next = new_head;
-
-    Node* temp = mainWorld.LocalSnack -> GetHead() -> next;
-    while (temp -> next != nullptr) {
-        map[temp -> next ->y/SIZE][temp -> next -> x/SIZE] = false;
-        temp = temp -> next;
-    }
-
-
-
-    if (F -> exists == true) {
-        Node* pre = mainWorld.LocalSnack -> GetHead();
-        Node* delete_tail = mainWorld.LocalSnack -> GetHead() -> next;
-        while (delete_tail -> next != nullptr) {
-            delete_tail = delete_tail -> next;
-            pre = pre -> next;
-        }
-        map[delete_tail -> y/SIZE][delete_tail -> x/SIZE] = true;
-        free(delete_tail);
-        pre -> next = nullptr;
-
-    }
-
+    mainWorld.LocalSnack ->ControlSnack_();
 }
 
 inline void UpdateMap2_() {
-    if (speed_gap == speed) {
-        speed_gap = 0;
+    if (mainWorld.LocalSnack -> GetGap_() == mainWorld.LocalSnack -> GetSpeed_()) {
+        mainWorld.LocalSnack -> SetGap_(0);
         //逻辑更新
-        UpdateSnack2_();
-        UpdateFood_();
-        if (IsDead_()) {
+        mainWorld.LocalSnack -> UpdateSnack2_();
+        mainWorld.LocalFood -> UpdateFood_();
+        if (mainWorld.LocalSnack -> IsDead_()) {
             mainWorld.levelManager -> SetChangeLevel("End");
             mainWorld.levelManager -> SetFlag_(true);
             return;
         }
     }else {
-        speed_gap++;
+        mainWorld.LocalSnack -> SetGap_(mainWorld.LocalSnack -> GetGap_() + 1);
     }
 }
 
@@ -115,7 +49,7 @@ inline void DrawBackground2_() {
 
 inline void RenderMap2_() {
     DrawBackground2_();
-    DrawSnack_();
-    DrawFood_();
-    DrawScore_();
+    mainWorld.LocalSnack -> DrawSnack_();
+    mainWorld.LocalFood -> DrawFood_();
+    mainWorld.LocalSnack -> DrawScore_();
 }

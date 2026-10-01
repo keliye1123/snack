@@ -41,10 +41,10 @@ public:
 
             //帧率控制
             end_time = std::chrono::steady_clock::now();
-            delta_time = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
-            if (delta_time < 1000/FPS) Sleep(1000/(FPS*2) - delta_time);//由于Sleep(的精度问题，需要将FPS*2)
+            mainWorld.main_UI -> SetDeltaTime_(std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count());
+            if (mainWorld.main_UI -> GetDeltaTime_() < 1000/FPS) Sleep(1000/(FPS*2) - mainWorld.main_UI -> GetDeltaTime_());//由于Sleep(的精度问题，需要将FPS*2)
             end_time = std::chrono::steady_clock::now();
-            delta_time = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
+            mainWorld.main_UI -> SetDeltaTime_(std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count());
 
         }
 

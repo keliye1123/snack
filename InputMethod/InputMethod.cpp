@@ -42,7 +42,17 @@ void InputMethod::Draw_(int x,int y) const {
     rectangle(250,y+25,400,500);
     settextstyle(25,0,"微软雅黑");
     outtextxy(250,y,currentPinyin_.c_str());
-    outtextxy(250,y+25,currentPinyin_.c_str());
+    auto it = dictionary_.find(currentPinyin_);
+    if (it != dictionary_.end()){
+        auto dictionary = it->second;
+            for(int i = selectedIndex_; i < 4 && i < dictionary.size(); ++i){
+                    if (selectedIndex_ == i) settextcolor(RED);
+                    outtextxy(250+(i-selectedIndex_)*25,y+25,WStringToString(dictionary[i].text).c_str());
+                    settextcolor(BLACK);
+            }
+
+    }
+
     if (IsChinese) {
         settextstyle(20,0,"微软雅黑");
         outtextxy(x+10,y+10,"中文");

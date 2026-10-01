@@ -2,51 +2,11 @@
 #include "../basic.h"
 #include "../InputMethod/InputMethod.h"
 
-inline char s[10];
-inline std::string name;//宽字符字符串
-inline std::vector<Word> words;
-
 inline bool key_lock = false;
-
-inline void WriteScore_() {
-
-    if (mainWorld.levelManager -> GetCurrentLevelName() == "map1") {
-
-        if (len1 <= 4){
-            players1[len1].name = name;
-            players1[len1].score = score;
-            len1++;
-        }
-        else if (score > players1[len1 - 1].score){
-            players1[len1 - 1].name = name;
-            players1[len1 - 1].score = score;
-        }
-        BubbleSort(players1,len1);
-
-    }
-    else if (mainWorld.levelManager -> GetCurrentLevelName() == "map2") {
-
-        if (len2 <= 4) {
-            players2[len2].name = name;
-            players2[len2].score = score;
-            len2++;
-        }
-        else if (score > players2[len2 - 1].score) {
-            players2[len2 - 1].name = name;
-            players2[len2 - 1].score = score;
-        }
-
-        BubbleSort(players2,len2);
-
-    }
-
-}
+inline ExMessage msg;
 
 inline void InitEnd_() {
 
-        memset(s,0,sizeof(s));
-        name.clear();
-        sprintf(s,"%d",score);
 
 }
 
@@ -57,14 +17,17 @@ inline void InputEnd_() {
         key_lock = true;
 
         //未处于输入法时回车：完成输入并退出
-        if ((GetAsyncKeyState(VK_RETURN) & 0x8000) && inputMethod.GetStatus_() == false) {
-            WriteScore_();
+        if ((GetAsyncKeyState(VK_RETURN) & 0x8000) && inputMethod.GetStatus_() == false && !mainWorld.LocalSnack ->GetName_().empty()) {
+            std::cout << mainWorld.LocalSnack -> GetScore_() << std::endl;
+            mainWorld.leaderBoard -> RenderLeaderUpdate_();
             mainWorld.levelManager -> SetChangeLevel("Menu");
             mainWorld.levelManager -> SetFlag_(true);
             return;
         }
 
-        words = inputMethod.RunInputMethod_(name);
+        std::string temp = mainWorld.LocalSnack -> GetName_();
+        inputMethod.RunInputMethod_(temp);
+        mainWorld.LocalSnack -> SetName_(temp);
     }
     else if (msg.message == WM_KEYUP && key_lock) key_lock = false;
 
@@ -78,9 +41,11 @@ inline void RenderEnd_() {
     inputMethod.Draw_(200,400 + 50);
     settextstyle(50,20,"微软雅黑");
     outtextxy(200,300,"最终的分：");
+    char s[20];
+    sprintf(s ,"%d",mainWorld.LocalSnack -> GetScore_());
     outtextxy(400,300,s);
     outtextxy(200,400,"输入昵称：");
-    outtextxy(400,400,name.c_str());
+    outtextxy(400,400,mainWorld.LocalSnack -> GetName_().c_str());
 }
 
 

@@ -1,15 +1,140 @@
 
 #include "Snack.h"
+#include "../Macro.h"
+#include "../World.h"
 
 Snack::Snack() {
     this -> speed = SPEED;
+    this -> maxSpeed = MAXSPEED;
+    this -> minSpeed = MINSPEED;
+    this -> gap = 0;
     this ->score = 0;
     this -> dir = ORIGIN_DIRECTION;
     this -> Head = nullptr;
 }
 
+//控制蛇
+void Snack::ControlSnack_() {
+    if (GetAsyncKeyState('A') && this -> dir != RIGHT) this -> dir = LEFT;
+    else if (GetAsyncKeyState('W') && this -> dir != DOWN) this -> dir = UP;
+    else if (GetAsyncKeyState('D') && this -> dir != LEFT) this -> dir = RIGHT;
+    else if (GetAsyncKeyState('S') && this -> dir != UP) this -> dir = DOWN;
+}
+
+//更新蛇
+void Snack::UpdateSnack_() const{
+    Node* new_head  = new Node();
+
+    switch (this -> dir) {
+        case LEFT:new_head -> x = this -> Head -> next -> x - SIZE;
+            new_head -> y = this -> Head -> next -> y;
+            break;
+
+        case UP:new_head -> y = this -> Head -> next -> y - SIZE;
+            new_head -> x = this -> Head -> next -> x;
+            break;
+
+        case RIGHT:new_head -> x = this -> Head -> next -> x + SIZE;
+            new_head -> y = this -> Head -> next -> y;
+            break;
+
+        case DOWN:new_head -> y = this -> Head -> next -> y + SIZE;
+            new_head -> x = this -> Head -> next -> x;
+            break;
+    }
+
+    new_head -> next = this -> Head -> next;
+    this -> Head -> next = new_head;
+
+    Node* temp = this -> Head -> next;
+    while (temp -> next != nullptr) {
+        mainWorld.map[temp -> next ->y/SIZE][temp -> next -> x/SIZE] = false;
+        temp = temp -> next;
+    }
+
+    if (mainWorld.LocalFood -> GetExists_() == true) {
+        Node* pre = this -> Head;
+        Node* delete_tail = this -> Head -> next;
+        while (delete_tail -> next != nullptr) {
+            delete_tail = delete_tail -> next;
+            pre = pre -> next;
+        }
+        mainWorld.map[delete_tail -> y/SIZE][delete_tail -> x/SIZE] = true;
+        free(delete_tail);
+        pre -> next = nullptr;
+
+    }
+}
+
+void Snack::UpdateSnack2_() {
+    Node* new_head  = new Node;
+
+    switch (this -> dir) {
+        case LEFT:new_head -> x = this -> Head -> next -> x - SIZE;
+            new_head -> y = this -> Head -> next -> y;
+            if (new_head -> x < 0) {
+                new_head -> x = WIDTH - SIZE;
+            }
+            break;
+
+        case UP:new_head -> y = this -> Head -> next -> y - SIZE;
+            new_head -> x = this -> Head -> next -> x;
+            if (new_head -> y < 0) {
+                new_head -> y = HEIGHT - SIZE;
+            }
+            break;
+
+        case RIGHT:new_head -> x = this -> Head -> next -> x + SIZE;
+            new_head -> y = this -> Head -> next -> y;
+            if (new_head -> x > WIDTH - SIZE) {
+                new_head -> x = 0;
+            }
+            break;
+
+        case DOWN:new_head -> y = this -> Head -> next -> y + SIZE;
+            new_head -> x = this -> Head -> next -> x;
+            if (new_head -> y > HEIGHT - SIZE) {
+                new_head -> y = 0;
+            }
+            break;
+    }
+
+    new_head -> next = this -> Head -> next;
+    this -> Head -> next = new_head;
+
+    Node* temp = this -> Head -> next;
+    while (temp -> next != nullptr) {
+        mainWorld.map[temp -> next ->y/SIZE][temp -> next -> x/SIZE] = false;
+        temp = temp -> next;
+    }
+
+    if (mainWorld.LocalFood -> GetExists_() == true) {
+        Node* pre = this -> Head;
+        Node* delete_tail = this -> Head -> next;
+        while (delete_tail -> next != nullptr) {
+            delete_tail = delete_tail -> next;
+            pre = pre -> next;
+        }
+        mainWorld.map[delete_tail -> y/SIZE][delete_tail -> x/SIZE] = true;
+        free(delete_tail);
+        pre -> next = nullptr;
+
+    }
+
+}
+
+void Snack::SetGap_(int gap_) {
+    this -> gap = gap_;
+}
+
+int Snack::GetGap_() const{
+    return this -> gap;
+}
+
 //初始化蛇
 void Snack::InitSnack_() {
+    this -> gap = speed;
+    this ->name.clear();
     this ->score = 0;
     this -> dir = ORIGIN_DIRECTION;
     Head = new Node();
@@ -57,6 +182,14 @@ void Snack::InitSnack_() {
     Head -> next =  head;
 }
 
+void Snack::SetName_(std::string name_) {
+    this -> name = name_;
+}
+
+std::string& Snack::GetName_(){
+    return this -> name;
+}
+
 //修改分数
 void Snack::SetScore_(const int& score_) {
     this -> score = score_;
@@ -91,22 +224,21 @@ Node* Snack::GetHead() const{
     return this -> Head;
 }
 
-bool Snack::IsDead_() {
-    if (map[Head -> next-> y/SIZE][Head -> next-> x/SIZE] == false) {
+bool Snack::IsDead_() const{
+    if (mainWorld.map[Head -> next-> y/SIZE][Head -> next-> x/SIZE] == false) {
         Node* cur = Head;
         while (cur != nullptr) {
             Node* next = cur->next;
             free(cur);
             cur = next;
         }
-        free(F);
         return true;
     }
     return false;
 }
 
 //渲染蛇
-void Snack::DrawSnack_() {
+void Snack::DrawSnack_() const{
     Node* head = Head -> next;
     while (head != nullptr) {
 
@@ -114,4 +246,11 @@ void Snack::DrawSnack_() {
         fillrectangle(head -> x,head -> y,head -> x + SIZE,head -> y+ SIZE);
         head = head -> next;
     }
+}
+
+void Snack::DrawScore_() const{
+    char s[20];
+    sprintf(s,"得分：%d",score);
+    settextstyle(75,0,"微软雅黑");
+    outtextxy(0,HEIGHT,s);
 }
